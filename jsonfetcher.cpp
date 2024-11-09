@@ -16,29 +16,29 @@ void JsonFetcher::onFinished(QNetworkReply *reply) {
         if (jsonDoc.isArray()) {
             QJsonArray jsonArray = jsonDoc.array();
             QStandardItemModel *model = new QStandardItemModel(jsonArray.size(), 3, this);
-            model->setHorizontalHeaderLabels({"Commit", "Date", "Description"});
+            model->setHorizontalHeaderLabels({ "Date", "Commit", "Description"});
 
             for (int i = 0; i < jsonArray.size(); ++i) {
                 QJsonObject obj = jsonArray[i].toObject();
-                QStandardItem *commitItem = new QStandardItem(obj["commit"].toString());
                 QStandardItem *dateItem = new QStandardItem(obj["date"].toString());
+                QStandardItem *commitItem = new QStandardItem(obj["commit"].toString().left(8));
                 QStandardItem *descriptionItem = new QStandardItem(obj["description"].toString());
 
                 // Ustawienie flag, aby elementy były tylko do odczytu
-                commitItem->setFlags(commitItem->flags() & ~Qt::ItemIsEditable);
                 dateItem->setFlags(dateItem->flags() & ~Qt::ItemIsEditable);
+                commitItem->setFlags(commitItem->flags() & ~Qt::ItemIsEditable);
                 descriptionItem->setFlags(descriptionItem->flags() & ~Qt::ItemIsEditable);
 
-                model->setItem(i, 0, commitItem);
-                model->setItem(i, 1, dateItem);
+                model->setItem(i, 0, dateItem);
+                model->setItem(i, 1, commitItem);
                 model->setItem(i, 2, descriptionItem);
             }
 
             tableView->setModel(model);
 
             // Ustawienie rozmiaru kolumn
-            tableView->setColumnWidth(0, 300); // Commit
-            tableView->setColumnWidth(1, 150); // Date
+            tableView->setColumnWidth(0, 140); // Commit
+            tableView->setColumnWidth(1, 90); // Date
             tableView->setColumnWidth(2, 400); // Description
 
             // Alternatywnie, można użyć resizeColumnsToContents() do automatycznego dopasowania rozmiaru kolumn
