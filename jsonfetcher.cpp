@@ -20,23 +20,32 @@ void JsonFetcher::onFinished(QNetworkReply *reply) {
 
             for (int i = 0; i < jsonArray.size(); ++i) {
                 QJsonObject obj = jsonArray[i].toObject();
+
                 QString commit = obj["commit"].toString().left(8); // Przycięcie do 8 znaków
                 QStandardItem *commitItem = new QStandardItem(commit);
+                //
                 QStandardItem *dateItem = new QStandardItem(obj["date"].toString());
+                //
                 QStandardItem *descriptionItem = new QStandardItem(obj["description"].toString());
+                //
                 QStandardItem *currentItem = new QStandardItem();
                 currentItem->setData(obj["current"].toBool(), Qt::DisplayRole);
+                //
+                QStandardItem *filename = new QStandardItem(obj["filename"].toString());
+
 
                 // Ustawienie flag, aby elementy były tylko do odczytu
                 commitItem->setFlags(commitItem->flags() & ~Qt::ItemIsEditable);
                 dateItem->setFlags(dateItem->flags() & ~Qt::ItemIsEditable);
                 descriptionItem->setFlags(descriptionItem->flags() & ~Qt::ItemIsEditable);
                 currentItem->setFlags(currentItem->flags() & ~Qt::ItemIsEditable);
+                filename->setFlags(currentItem->flags() & ~Qt::ItemIsEditable);
 
                 model->setItem(i, 0, commitItem);
                 model->setItem(i, 1, dateItem);
                 model->setItem(i, 2, descriptionItem);
                 model->setItem(i, 3, currentItem);
+                model->setItem(i, 4, filename);
             }
 
             tableView->setModel(model);
@@ -52,6 +61,7 @@ void JsonFetcher::onFinished(QNetworkReply *reply) {
 
             // Ukrycie kolumny 'Current'
             tableView->setColumnHidden(3, true);
+            tableView->setColumnHidden(4, true);
 
             // Alternatywnie, można użyć resizeColumnsToContents() do automatycznego dopasowania rozmiaru kolumn
             // tableView->resizeColumnsToContents();
