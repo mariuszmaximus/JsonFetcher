@@ -12,6 +12,8 @@
 #include <QStyledItemDelegate>
 #include <QPainter>
 #include <QKeyEvent>
+#include <QDesktopServices>
+
 
 class JsonFetcher : public QObject {
     Q_OBJECT
@@ -63,6 +65,16 @@ protected:
         }
         QTableView::keyPressEvent(event);
     }
+
+    void mouseDoubleClickEvent(QMouseEvent *event) override {
+        QModelIndex index = indexAt(event->pos());
+        if (index.isValid()) {
+            QString filename = model()->data(model()->index(index.row(), 4)).toString(); // Assuming 'Filename' is the 5th column (index 4)
+            QUrl url(QString("http://update.draminski.com/iScan3/release/%1.7z").arg(filename));
+            QDesktopServices::openUrl(url);
+        }
+        QTableView::mouseDoubleClickEvent(event);
+    }    
 };
 
 
