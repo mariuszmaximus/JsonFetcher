@@ -13,6 +13,9 @@ int main(int argc, char *argv[]) {
     // Ustawienie, aby zaznaczał się cały wiersz
     tableView.setSelectionBehavior(QAbstractItemView::SelectRows);
 
+    // Wyłączenie multiselect
+    tableView.setSelectionMode(QAbstractItemView::SingleSelection);
+
     JsonFetcher fetcher(&tableView);
     fetcher.fetch(QUrl("http://update.draminski.com/iScan3/"));
 
