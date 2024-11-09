@@ -16,7 +16,7 @@ void JsonFetcher::onFinished(QNetworkReply *reply) {
         if (jsonDoc.isArray()) {
             QJsonArray jsonArray = jsonDoc.array();
             QStandardItemModel *model = new QStandardItemModel(jsonArray.size(), 4, this); // 4 columns including 'current'
-            model->setHorizontalHeaderLabels({"Commit", "Date", "Description", "Current"});
+            model->setHorizontalHeaderLabels({"Commit", "Date", "Description", "Current", "Filename"});
 
             for (int i = 0; i < jsonArray.size(); ++i) {
                 QJsonObject obj = jsonArray[i].toObject();
@@ -55,6 +55,7 @@ void JsonFetcher::onFinished(QNetworkReply *reply) {
             tableView->setColumnWidth(1, 150); // Date
             tableView->setColumnWidth(2, 400); // Description
             tableView->setColumnWidth(3, 50);  // Current (hidden)
+            tableView->setColumnWidth(4, 250); // Filename (hidden)
 
             // Ustawienie delegata do wyróżniania wierszy
             tableView->setItemDelegate(new HighlightDelegate(tableView));

@@ -5,7 +5,7 @@
 int main(int argc, char *argv[]) {
     QApplication app(argc, argv);
 
-    QTableView tableView;
+    CustomTableView tableView;
     tableView.setWindowTitle("JSON Data Table");
     tableView.resize(800, 600);
     tableView.show();

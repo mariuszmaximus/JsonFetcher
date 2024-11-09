@@ -11,6 +11,7 @@
 #include <QStandardItemModel>
 #include <QStyledItemDelegate>
 #include <QPainter>
+#include <QKeyEvent>
 
 class JsonFetcher : public QObject {
     Q_OBJECT
@@ -39,5 +40,30 @@ public:
         QStyledItemDelegate::paint(painter, option, index);
     }
 };
+
+
+class CustomTableView : public QTableView {
+    Q_OBJECT
+public:
+    CustomTableView(QWidget *parent = nullptr) : QTableView(parent) {}
+
+protected:
+    void keyPressEvent(QKeyEvent *event) override {
+        if (event->key() == Qt::Key_F1) {
+            if(isColumnHidden(3))
+            {
+                showColumn(3);
+                showColumn(4); 
+            }
+            else {
+                hideColumn(3);
+                hideColumn(4);
+            }
+
+        }
+        QTableView::keyPressEvent(event);
+    }
+};
+
 
 #endif // JSONFETCHER_H
