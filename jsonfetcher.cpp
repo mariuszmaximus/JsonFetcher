@@ -20,9 +20,18 @@ void JsonFetcher::onFinished(QNetworkReply *reply) {
 
             for (int i = 0; i < jsonArray.size(); ++i) {
                 QJsonObject obj = jsonArray[i].toObject();
-                model->setItem(i, 0, new QStandardItem(obj["commit"].toString()));
-                model->setItem(i, 1, new QStandardItem(obj["date"].toString()));
-                model->setItem(i, 2, new QStandardItem(obj["description"].toString()));
+                QStandardItem *commitItem = new QStandardItem(obj["commit"].toString());
+                QStandardItem *dateItem = new QStandardItem(obj["date"].toString());
+                QStandardItem *descriptionItem = new QStandardItem(obj["description"].toString());
+
+                // Ustawienie flag, aby elementy były tylko do odczytu
+                commitItem->setFlags(commitItem->flags() & ~Qt::ItemIsEditable);
+                dateItem->setFlags(dateItem->flags() & ~Qt::ItemIsEditable);
+                descriptionItem->setFlags(descriptionItem->flags() & ~Qt::ItemIsEditable);
+
+                model->setItem(i, 0, commitItem);
+                model->setItem(i, 1, dateItem);
+                model->setItem(i, 2, descriptionItem);
             }
 
             tableView->setModel(model);
